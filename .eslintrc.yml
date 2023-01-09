@@ -1,0 +1,36 @@
+parser: '@typescript-eslint/parser'
+env:
+  node: true
+root: true
+parserOptions:
+  project: tsconfig.json
+  ecmaVersion: latest
+  sourceType: module
+plugins:
+  - '@typescript-eslint'
+  - only-warn
+extends:
+  - 'plugin:@typescript-eslint/recommended'
+rules:
+  semi: [ 1, always ]
+  no-multiple-empty-lines: [ 1, { max: 2, maxEOF: 0 } ]
+  prefer-const: 1
+  arrow-body-style: [ 1, as-needed ]
+  arrow-parens: [1, always]
+  indent: [1, 2]
+  comma-dangle: [1, always-multiline]
+  quote-props: [1, as-needed]
+  prefer-destructuring: 1
+  object-curly-spacing: [1, always]
+  object-curly-newline: [1, { multiline: true, consistent: true }]
+  no-trailing-spaces: 1
+  no-console: 1
+  quotes: [1, single]
+
+  '@typescript-eslint/no-unused-vars': 1
+  '@typescript-eslint/consistent-type-imports': 1
+  '@typescript-eslint/interface-name-prefix': 0
+  '@typescript-eslint/explicit-function-return-type': 0
+  '@typescript-eslint/explicit-module-boundary-types': 0
+  '@typescript-eslint/no-explicit-any': 0
+
