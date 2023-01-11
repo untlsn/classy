@@ -11,8 +11,6 @@ export class TeachersService {
   create(data: z.output<typeof teachersBodySchema>) {
     return this.prisma.teacher.create({
       data: {
-        classId: data.classId,
-
         user: {
           create: {
             firstName: data.firstName,
@@ -40,16 +38,15 @@ export class TeachersService {
     }).then(teachersResSchema.parse);
   }
 
-  update(id: number) {
+  update(id: number, data: z.output<typeof teachersBodySchema>) {
     return this.prisma.teacher.update({
       where: { id },
       data: {
-        classId: data.classId,
         user: {
           update: {
             firstName: data.firstName,
             lastName: data.lastName,
-            birth: data.birth,
+            birth: data.birth.toISOString(),
           },
         },
       },
@@ -65,9 +62,6 @@ export class TeachersService {
       where: { id: removedTeacher.userId },
     });
 
-    return {
-      teacherId: removedTeacher.id,
-      userId: removedTeacher.userId,
-    };
+    return removedTeacher;
   }
 }

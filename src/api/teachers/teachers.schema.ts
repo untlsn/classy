@@ -3,7 +3,6 @@ import dayjs from 'dayjs';
 import dateFormat from '~/helpers/dateFormat';
 
 export const teachersBodySchema = z.object({
-  classId: z.number().min(1, 'Id klasy nie może być mniejsze niż 1').optional(),
   firstName: z.string({
     required_error: 'Imie jest wymagane',
   }),
