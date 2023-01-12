@@ -1,9 +1,10 @@
 import { defineConfig } from 'tsup';
 
 export default defineConfig({
-  entry: ['src/main.ts'],
-  splitting: false,
+  entry: ['src/**/*.ts'],
   sourcemap: true,
   clean: true,
-  bundle: true,
+  splitting: true,
+  treeshake: true,
+  bundle: false,
 });

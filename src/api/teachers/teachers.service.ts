@@ -1,9 +1,9 @@
 import { Injectable } from '@nestjs/common';
-import { PrismaService } from '~/prisma/prisma.service';
 import type { z } from 'zod';
-import type { teachersBodySchema } from '~/api/teachers/teachers.schema';
-import { teachersResSchema } from '~/api/teachers/teachers.schema';
-import { PaginationService } from '~/pagination/pagination.service';
+import { PrismaService } from '../../prisma/prisma.service';
+import { PaginationService } from '../../pagination/pagination.service';
+import type { teachersBodySchema } from './teachers.schema';
+import { teachersResSchema } from './teachers.schema';
 
 @Injectable()
 export class TeachersService {

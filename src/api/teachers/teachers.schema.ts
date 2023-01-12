@@ -1,6 +1,6 @@
 import { z } from 'zod';
 import dayjs from 'dayjs';
-import dateFormat from '~/helpers/dateFormat';
+import dateFormat from '../../helpers/dateFormat';
 
 export const teachersBodySchema = z.object({
   firstName: z.string({

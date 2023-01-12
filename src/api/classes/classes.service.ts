@@ -1,7 +1,7 @@
 import { Injectable } from '@nestjs/common';
-import { PrismaService } from '~/prisma/prisma.service';
 import type { z } from 'zod';
-import type { classesBodySchema } from '~/api/classes/teachers.schema';
+import { PrismaService } from '../../prisma/prisma.service';
+import type { classesBodySchema } from './teachers.schema';
 
 @Injectable()
 export class ClassesService {

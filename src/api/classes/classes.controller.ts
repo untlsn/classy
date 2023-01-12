@@ -1,9 +1,9 @@
 import { Body, Controller, Get, Param, ParseIntPipe, Post, UsePipes } from '@nestjs/common';
 import { ClassesService } from './classes.service';
 import { z } from 'zod';
-import { classesBodySchema } from '~/api/classes/teachers.schema';
 import { zodToOpenAPI, ZodValidationPipe } from 'nestjs-zod';
 import { ApiBody, ApiOperation } from '@nestjs/swagger';
+import { classesBodySchema } from './teachers.schema';
 
 @Controller('classes')
 export class ClassesController {

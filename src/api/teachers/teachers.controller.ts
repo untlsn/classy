@@ -3,8 +3,8 @@ import { TeachersService } from './teachers.service';
 import { ZodValidationPipe } from 'nestjs-zod';
 import { z } from 'zod';
 import { ApiOperation, ApiBody, ApiQuery } from '@nestjs/swagger';
-import { singleZod } from '~/helpers/singleExample';
-import { teachersBodySchema } from '~/api/teachers/teachers.schema';
+import { teachersBodySchema } from './teachers.schema';
+import { singleZod } from '../../helpers/singleExample';
 
 @Controller('api/teachers')
 export class TeachersController {

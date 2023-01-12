@@ -1,7 +1,7 @@
 import { Injectable } from '@nestjs/common';
-import env from '~/data/env';
-import type { GetResult, Meta, MetaOptions, Page } from '~/pagination/pagination';
-import objIncludesKey from '~/helpers/objIncludesKey';
+import type { GetResult, Meta, MetaOptions, Page } from './pagination';
+import env from '../data/env';
+import objIncludesKey from '../helpers/objIncludesKey';
 
 @Injectable()
 export class PaginationService {
