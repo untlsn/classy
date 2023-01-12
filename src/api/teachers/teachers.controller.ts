@@ -45,6 +45,8 @@ export class TeachersController {
     firstName: 'Imie',
     lastName: 'Nazwisko',
     birth: '2000-01-30',
+    email: 'email@example.pl',
+    password: 'password',
   }))
   create(@Body() body: z.output<typeof teachersBodySchema>) {
     return this.teachersService.create(body);

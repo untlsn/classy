@@ -21,6 +21,8 @@ model User {
   firstName String
   lastName  String
   birth     DateTime  @db.Date
+  email     String    @unique
+  password  String
 
   student   Student?
   teacher   Teacher?
@@ -29,6 +31,7 @@ model User {
 enum Role {
   STUDENT
   TEACHER
+  ADMIN
 }
 
 model Student {

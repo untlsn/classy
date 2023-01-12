@@ -1,10 +1,11 @@
 import { Injectable } from '@nestjs/common';
 import type { GetResult, Meta, MetaOptions, Page } from './pagination';
-import env from '../data/env';
 import objIncludesKey from '../helpers/objIncludesKey';
+import process from 'process';
 
 @Injectable()
 export class PaginationService {
+  defaultLimit = Number(process.env.DEFAULT_LIMIT);
 
   private getMeta(count: number, limit: number, page: number): Meta | undefined {
     const skip = limit * (page - 1);
@@ -32,7 +33,7 @@ export class PaginationService {
     options: MetaOptions,
   ): Promise<Page<Res>> {
     const count = await countPromise;
-    const limit = options.limit > 0 ? options.limit : env.defaultLimit;
+    const limit = options.limit > 0 ? options.limit : this.defaultLimit;
     const page = options.page > 0 ? options.page : 1;
     const cursor = options.cursor || undefined;
     const meta = this.getMeta(count, limit, page);
