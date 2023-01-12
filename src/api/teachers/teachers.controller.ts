@@ -1,10 +1,11 @@
-import { Controller, Post, Body, UsePipes, ParseIntPipe, Get, Param, Patch, Delete } from '@nestjs/common';
+import { Controller, Post, Body, UsePipes, ParseIntPipe, Get, Param, Patch, Delete, Query } from '@nestjs/common';
 import { TeachersService } from './teachers.service';
 import { ZodValidationPipe } from 'nestjs-zod';
 import { z } from 'zod';
-import { ApiOperation, ApiBody } from '@nestjs/swagger';
+import { ApiOperation, ApiBody, ApiQuery } from '@nestjs/swagger';
 import { singleZod } from '~/helpers/singleExample';
 import { teachersBodySchema } from '~/api/teachers/teachers.schema';
+import env from '~/data/env';
 
 @Controller('api/teachers')
 export class TeachersController {
@@ -12,8 +13,18 @@ export class TeachersController {
 
   @Get()
   @ApiOperation({ summary: 'Get page of teachers' })
-  findAll() {
-    return this.teachersService.findAll();
+  @ApiQuery({
+    name: 'page',
+    type: Number,
+    required: false,
+  })
+  @ApiQuery({
+    name: 'limit',
+    type: Number,
+    required: false,
+  })
+  findAll(@Query('page') page = '1', @Query('limit') limit: string) {
+    return this.teachersService.findAll(Number(page), Number(limit) || env.defaultLimit);
   }
   @Post()
   @UsePipes(new ZodValidationPipe(teachersBodySchema))

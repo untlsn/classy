@@ -3,10 +3,11 @@ import { PrismaService } from '~/prisma/prisma.service';
 import type { z } from 'zod';
 import type { teachersBodySchema } from '~/api/teachers/teachers.schema';
 import { teachersResSchema } from '~/api/teachers/teachers.schema';
+import { PaginationService } from '~/pagination/pagination.service';
 
 @Injectable()
 export class TeachersService {
-  constructor(private prisma: PrismaService) {}
+  constructor(private prisma: PrismaService, private pagination: PaginationService) {}
 
   create(data: z.output<typeof teachersBodySchema>) {
     return this.prisma.teacher.create({
@@ -24,12 +25,22 @@ export class TeachersService {
     }).then(teachersResSchema.parse);
   }
 
-  findAll() {
-    return this.prisma.teacher.findMany({
-      include: {
-        user: true,
+  async findAll(page: number, limit: number) {
+    return this.pagination.createPage(
+      {
+        count: await this.prisma.teacher.count(),
+        page,
+        limit,
       },
-    }).then(teachersResSchema.array().parse);
+      (options) => (
+        this.prisma.teacher.findMany({
+          include: {
+            user: true,
+          },
+          ...options,
+        }).then(teachersResSchema.array().parse)
+      ),
+    );
   }
 
   findOne(id: number) {
