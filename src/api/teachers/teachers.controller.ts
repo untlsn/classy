@@ -22,8 +22,21 @@ export class TeachersController {
     type: Number,
     required: false,
   })
-  findAll(@Query('page') page = '1', @Query('limit') limit: string) {
-    return this.teachersService.findAll(Number(page), Number(limit));
+  @ApiQuery({
+    name: 'cursor',
+    type: Number,
+    required: false,
+  })
+  findAll(
+    @Query('page') page: string,
+    @Query('limit') limit: string,
+    @Query('cursor') cursor: string,
+  ) {
+    return this.teachersService.findAll(
+      +page,
+      +limit,
+      +cursor,
+    );
   }
   @Post()
   @UsePipes(new ZodValidationPipe(teachersBodySchema))

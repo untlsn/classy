@@ -34,6 +34,7 @@ export class PaginationService {
     const count = await countPromise;
     const limit = options.limit > 0 ? options.limit : env.defaultLimit;
     const page = options.page > 0 ? options.page : 1;
+    const cursor = options.cursor || undefined;
     const meta = this.getMeta(count, limit, page);
 
     if (!meta) {
@@ -43,7 +44,11 @@ export class PaginationService {
       };
     }
 
-    const result = await getResult({
+    const result = await getResult( cursor ? {
+      take: limit,
+      skip: 1,
+      cursor: { id: cursor },
+    } : {
       take: limit,
       skip: limit * (page - 1),
     });

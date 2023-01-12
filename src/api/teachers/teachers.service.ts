@@ -25,7 +25,7 @@ export class TeachersService {
     }).then(teachersResSchema.parse);
   }
 
-  async findAll(page: number, limit: number) {
+  async findAll(page: number, limit: number, cursor: number) {
     return this.pagination.createPage(
       this.prisma.teacher.count(),
       (options) => (
@@ -33,11 +33,10 @@ export class TeachersService {
           include: {
             user: true,
           },
-          take: options.take,
-          skip: options.skip,
+          ...options,
         }).then(teachersResSchema.array().parse)
       ),
-      { page, limit },
+      { page, limit, cursor },
     );
   }
 
