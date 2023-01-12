@@ -1,11 +1,12 @@
 import { Injectable } from '@nestjs/common';
 import env from '~/data/env';
 import type { GetResult, Meta, MetaOptions, Page } from '~/pagination/pagination';
+import objIncludesKey from '~/helpers/objIncludesKey';
 
 @Injectable()
 export class PaginationService {
 
-  getMeta({ count, limit = env.defaultLimit, page = 1 }: MetaOptions): Meta | undefined {
+  private getMeta(count: number, limit: number, page: number): Meta | undefined {
     const skip = limit * (page - 1);
     if (skip > count) return undefined;
 
@@ -17,21 +18,40 @@ export class PaginationService {
     };
   }
 
-  async createPage<Res>(options: MetaOptions, getResult: GetResult<Res>): Promise<Page<Res>> {
-    const meta = this.getMeta(options);
+  getCursor<Res>(results: Res[]): number | undefined {
+    const lastResult = results.at(-1);
+
+    return objIncludesKey(lastResult, 'id') && typeof lastResult.id == 'number'
+      ? lastResult.id
+      : undefined;
+  }
+
+  async createPage<Res>(
+    countPromise: PromiseLike<number>,
+    getResult: GetResult<Res>,
+    options: MetaOptions,
+  ): Promise<Page<Res>> {
+    const count = await countPromise;
+    const limit = options.limit > 0 ? options.limit : env.defaultLimit;
+    const page = options.page > 0 ? options.page : 1;
+    const meta = this.getMeta(count, limit, page);
 
     if (!meta) {
       return {
         result: [],
-        meta: { count: options.count },
+        meta: { count },
       };
     }
 
+    const result = await getResult({
+      take: limit,
+      skip: limit * (page - 1),
+    });
+
+    meta.cursor = this.getCursor(result);
+
     return {
-      result: await getResult({
-        take: options.limit,
-        skip: options.limit * (options.page - 1),
-      }),
+      result,
       meta,
     };
   }

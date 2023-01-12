@@ -5,7 +5,6 @@ import { z } from 'zod';
 import { ApiOperation, ApiBody, ApiQuery } from '@nestjs/swagger';
 import { singleZod } from '~/helpers/singleExample';
 import { teachersBodySchema } from '~/api/teachers/teachers.schema';
-import env from '~/data/env';
 
 @Controller('api/teachers')
 export class TeachersController {
@@ -24,7 +23,7 @@ export class TeachersController {
     required: false,
   })
   findAll(@Query('page') page = '1', @Query('limit') limit: string) {
-    return this.teachersService.findAll(Number(page), Number(limit) || env.defaultLimit);
+    return this.teachersService.findAll(Number(page), Number(limit));
   }
   @Post()
   @UsePipes(new ZodValidationPipe(teachersBodySchema))

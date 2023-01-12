@@ -27,19 +27,17 @@ export class TeachersService {
 
   async findAll(page: number, limit: number) {
     return this.pagination.createPage(
-      {
-        count: await this.prisma.teacher.count(),
-        page,
-        limit,
-      },
+      this.prisma.teacher.count(),
       (options) => (
         this.prisma.teacher.findMany({
           include: {
             user: true,
           },
-          ...options,
+          take: options.take,
+          skip: options.skip,
         }).then(teachersResSchema.array().parse)
       ),
+      { page, limit },
     );
   }
 
