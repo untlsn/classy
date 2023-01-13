@@ -5,9 +5,10 @@ import { ApiBody, ApiOperation } from '@nestjs/swagger';
 import { singleZod } from '../../helpers/singleExample';
 import { loginBodySchema } from './auth.schema';
 import { z } from 'zod';
-import { JwtUser, JwtUserPayload } from '../../decorators/JwtUser.decorator';
+import { JwtUser, type JwtUserPayload } from '../../decorators/JwtUser.decorator';
 import { JwtAuthGuard } from './jwt.guard';
 import { UsersService } from '../users/users.service';
+
 
 @Controller('api/auth')
 export class AuthController {

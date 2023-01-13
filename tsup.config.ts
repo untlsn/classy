@@ -1,10 +1,10 @@
 import { defineConfig } from 'tsup';
 
-export default defineConfig((options) => ({
-  entry: options.watch ? ['src/**/*.ts'] : {
-    server: 'src/main.ts',
-  },
+export default defineConfig({
+  entry: ['src/main.ts'],
   clean: true,
-  bundle: !options.watch,
-  minify: !options.watch,
-}));
+  bundle: true,
+  minify: true,
+  format: ['cjs'],
+  shims: true,
+});
