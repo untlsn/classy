@@ -6,6 +6,6 @@ export const userResSchema = z.object({
   role: z.string(),
   firstName: z.string(),
   lastName: z.string(),
-  birth: z.string().transform(dateFormat),
+  birth: z.string().or(z.date().transform(dateFormat)),
   email: z.string(),
 });

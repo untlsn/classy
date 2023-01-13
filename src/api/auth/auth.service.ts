@@ -1,29 +1,26 @@
-import { Injectable } from '@nestjs/common';
+import { Injectable, UnauthorizedException, NotFoundException } from '@nestjs/common';
+import { JwtService } from '@nestjs/jwt';
 import { UsersService } from '../users/users.service';
 import * as bcrypt from 'bcrypt';
-
-const validateEnum = {
-  success: 'SUCCESS',
-  notFound: 'NOT_FOUND',
-  basPass: 'BAD_PASS',
-} as const;
-
-type ValidateEnum = typeof validateEnum;
-type ValidateEnumValues = ValidateEnum[keyof ValidateEnum]
+import type { User } from '@prisma/client';
 
 @Injectable()
 export class AuthService {
-  constructor(private users: UsersService) {}
+  constructor(private users: UsersService, private jwt: JwtService) {}
 
-  validateEnum = validateEnum;
+  async validateUser(email: string, pass: string) {
+    const user = await this.users.findOneByEmail(email, true);
 
-  async validateUser(email: string, pass: string): Promise<ValidateEnumValues> {
-    const user = await this.users.findOneByEmail(email).then();
+    if (!user) throw new NotFoundException('Email nie jest przypisany do żadnego uzytkownika');
 
-    if (!user) return this.validateEnum.notFound;
+    if (await bcrypt.compare(pass, user.password)) return this.users.prepareRes(user);
 
-    if (await bcrypt.compare(user.password, pass)) return this.validateEnum.success;
+    throw new UnauthorizedException('Złe hasło');
+  }
 
-    return this.validateEnum.basPass;
+  login(user: User) {
+    return this.jwt.sign({
+      sub: user.id,
+    });
   }
 }

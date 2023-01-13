@@ -23,7 +23,7 @@ DROP COLUMN "lastName",
 ADD COLUMN     "userId" INTEGER NOT NULL;
 
 -- CreateTable
-CREATE TABLE "User" (
+CREATE TABLE "ResUser" (
     "id" SERIAL NOT NULL,
     "role" "Role" NOT NULL DEFAULT 'STUDENT',
     "firstName" TEXT NOT NULL,
@@ -40,7 +40,7 @@ CREATE UNIQUE INDEX "Student_userId_key" ON "Student"("userId");
 CREATE UNIQUE INDEX "Teacher_userId_key" ON "Teacher"("userId");
 
 -- AddForeignKey
-ALTER TABLE "Student" ADD CONSTRAINT "Student_userId_fkey" FOREIGN KEY ("userId") REFERENCES "User"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
+ALTER TABLE "Student" ADD CONSTRAINT "Student_userId_fkey" FOREIGN KEY ("userId") REFERENCES "ResUser"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
 
 -- AddForeignKey
-ALTER TABLE "Teacher" ADD CONSTRAINT "Teacher_userId_fkey" FOREIGN KEY ("userId") REFERENCES "User"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
+ALTER TABLE "Teacher" ADD CONSTRAINT "Teacher_userId_fkey" FOREIGN KEY ("userId") REFERENCES "ResUser"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
